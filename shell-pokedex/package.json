@@ -4,13 +4,16 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 3000 --strictPort",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "serve": "vite preview --port 3000 --strictPort",
+    "start": "npm run build && npm run serve"
   },
   "dependencies": {
     "@originjs/vite-plugin-federation": "^1.4.1",
+    "@tanstack/react-query": "^5.90.16",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.11.0",
