@@ -8,8 +8,8 @@ export default defineConfig({
     federation({
       name: "shell_pokedex",
       remotes: {
-        pokemon_detail: "http://localhost:3001/assets/remoteEntry.js",
-        pokemon_history: "http://localhost:3002/assets/remoteEntry.js",
+        pokemon_detail: "https://mf-pokemon-detail.vercel.app/assets/remoteEntry.js",
+        pokemon_history: "https://mf-pokemon-history.vercel.app/assets/remoteEntry.js",
       },
       exposes: {
         "./store": "./src/shared/store.js",
