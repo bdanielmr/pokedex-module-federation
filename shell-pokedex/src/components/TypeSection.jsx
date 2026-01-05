@@ -49,7 +49,7 @@ export default function TypeSection({ typeName, onOpenPokemon }) {
     setExpanded(false);
   }, [data, typeName]);
 
-  const { displayPokemons, totalCount, hasMore } = useMemo(() => {
+  const { displayPokemons, hasMore } = useMemo(() => {
     const total = randomPokemons.length;
     const limit = expanded ? 10 : 6;
 
@@ -79,7 +79,6 @@ export default function TypeSection({ typeName, onOpenPokemon }) {
     <TypeCard typeName={typeName}>
       <TypeHeader typeName={typeName}>
         <TypeTitle typeName={typeName}>{typeName}</TypeTitle>
-        <CountBadge typeName={typeName}>{totalCount}</CountBadge>
       </TypeHeader>
 
       <PokemonGrid>
@@ -99,7 +98,7 @@ export default function TypeSection({ typeName, onOpenPokemon }) {
           typeName={typeName}
           onClick={() => setExpanded((v) => !v)}
         >
-          {expanded ? "Ver menos" : `Ver más (${totalCount - displayPokemons.length} más)`}
+          {expanded ? "Ver menos" : `Ver más`}
         </ViewMoreButton>
       )}
     </TypeCard>
