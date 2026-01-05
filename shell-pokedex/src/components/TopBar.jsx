@@ -12,27 +12,67 @@ const TopBarContainer = styled.div`
   padding: 16px;
   background: ${(p) => p.theme.card};
   border-bottom: 1px solid ${(p) => p.theme.fg}22;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
 `;
 
 const Logo = styled.b`
   font-size: 18px;
   letter-spacing: 2px;
   cursor: pointer;
+  user-select: none;
+
+  @media (max-width: 640px) {
+    text-align: center;
+  }
 `;
 
 const ActionsGroup = styled.div`
   display: flex;
   gap: 8px;
   align-items: center;
+  justify-content: flex-end;
+
+  @media (max-width: 640px) {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 `;
 
 const UserInfo = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 12px;
+  padding: 6px 10px;
   background: ${(p) => p.theme.bg};
-  border-radius: 6px;
+  border-radius: 10px;
+  border: 1px solid ${(p) => p.theme.fg}14;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+
+  @media (max-width: 640px) {
+    width: 100%;
+    justify-content: center;
+    gap: 10px;
+  }
+`;
+
+const UserName = styled.span`
+  opacity: 0.9;
+  font-weight: 700;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  @media (max-width: 640px) {
+    max-width: 100%;
+    text-align: center;
+  }
 `;
 
 const Toggle = styled.button`
@@ -55,11 +95,18 @@ const Toggle = styled.button`
 
   transition: background 180ms ease;
   outline: none;
+  -webkit-tap-highlight-color: transparent;
 
   &:focus-visible {
     box-shadow:
       inset 0 0 0 1px rgba(0,0,0,0.06),
       0 0 0 3px rgba(100, 160, 255, 0.35);
+  }
+
+  @media (max-width: 640px) {
+    --w: 66px;
+    --h: 30px;
+    --p: 4px;
   }
 `;
 
@@ -101,7 +148,7 @@ export function TopBar() {
   const toggleTheme = useAppStore((s) => s.toggleTheme);
   const user = useAppStore((s) => s.user);
   const logout = useAppStore((s) => s.logout);
-  
+
   const nav = useNavigate();
 
   const handleLogout = () => {
@@ -112,12 +159,13 @@ export function TopBar() {
   return (
     <TopBarContainer>
       <Logo onClick={() => nav("/")}>POKÉDEX</Logo>
+
       <ActionsGroup>
         <ThemeToggle checked={theme === "light"} onChange={toggleTheme} />
-        
+
         {user && (
           <UserInfo>
-            <span>{user.name}</span>
+            <UserName title={user.name}>{user.name}</UserName>
             <Button onClick={() => nav("/history")}>Historial</Button>
             <Button onClick={handleLogout}>Cerrar sesión</Button>
           </UserInfo>
