@@ -12,7 +12,7 @@ export default defineConfig({
         "./PokemonHistoryPage": "./src/PokemonHistoryPage.jsx",
       },
       remotes: {
-        shell_pokedex: "http://localhost:3000/assets/remoteEntry.js",
+        shell_pokedex: "https://pokedex-module-federation.vercel.app/assets/remoteEntry.js",
       },
       shared: ["react", "react-dom", "styled-components", "zustand", "react-router-dom"],
     }),
