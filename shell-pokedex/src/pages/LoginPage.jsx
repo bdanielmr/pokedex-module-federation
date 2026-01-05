@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppStore } from "../shared/store";
 import { Shell, Button } from "../styles/commonStyles";
 import styled from "styled-components";
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const LoginContainer = styled(Shell)`
   max-width: 400px;
@@ -21,14 +23,21 @@ const Input = styled.input`
   padding: 12px 14px;
   font-size: 15px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid
+    ${(p) => (p.$invalid ? "rgba(255, 80, 80, 0.8)" : "rgba(255, 255, 255, 0.15)")};
   background: rgba(255, 255, 255, 0.04);
   color: ${(p) => p.theme.fg};
 
   &:focus {
     outline: none;
-    border-color: ${(p) => p.theme.primary};
+    border-color: ${(p) =>
+      p.$invalid ? "rgba(255, 80, 80, 0.9)" : p.theme.primary};
   }
+`;
+
+const ErrorText = styled.span`
+  font-size: 13px;
+  color: #ff6b6b;
 `;
 
 const LoginButton = styled(Button)`
@@ -42,9 +51,14 @@ export function LoginPage() {
   const login = useAppStore((s) => s.login);
   const nav = useNavigate();
 
+  const isValidEmail = useMemo(
+    () => EMAIL_REGEX.test(email.trim()),
+    [email]
+  );
+
   const handleLogin = () => {
-    if (!email) return;
-    login(email);
+    if (!isValidEmail) return;
+    login(email.trim());
     nav("/");
   };
 
@@ -56,11 +70,17 @@ export function LoginPage() {
         type="email"
         placeholder="correo@ejemplo.com"
         value={email}
+        $invalid={email.length > 0 && !isValidEmail}
         onChange={(e) => setEmail(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && handleLogin()}
+        aria-invalid={email.length > 0 && !isValidEmail}
       />
 
-      <LoginButton onClick={handleLogin} disabled={!email}>
+      {email.length > 0 && !isValidEmail && (
+        <ErrorText>Ingresa un correo válido</ErrorText>
+      )}
+
+      <LoginButton onClick={handleLogin} disabled={!isValidEmail}>
         Entrar
       </LoginButton>
     </LoginContainer>
